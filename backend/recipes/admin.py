@@ -45,8 +45,13 @@ class RecipeAdmin(ModelAdmin):
 class CountOfIngredientAdmin(ModelAdmin):
     """Подсчёт ингредиентов админка."""
 
-    list_display = ('id', 'ingredient', 'amount', 'get_measurement_unit',
-                    'get_recipes_count')
+    list_display = (
+        'id',
+        'ingredient',
+        'amount',
+        'get_measurement_unit',
+        'get_recipes_count'
+    )
     readonly_fields = ('get_measurement_unit',)
     list_filter = ('ingredient',)
     ordering = ('ingredient',)

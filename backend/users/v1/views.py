@@ -15,7 +15,7 @@ from api.serializers.nested import RecipeShortReadSerializer
 from foodgram.pagination import LimitPageNumberPagination
 from recipes.models import Recipe
 
-from .models import ShoppingCart, Subscribe, User
+from users.models import ShoppingCart, Subscribe, User
 from .serializers import SubscriptionSerializer
 
 

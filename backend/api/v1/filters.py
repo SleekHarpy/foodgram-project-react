@@ -50,16 +50,13 @@ class RecipeFilter(FilterSet):
         """Мета класс фильтра рецептов."""
 
         model = Recipe
-        fields = ('author',)
+        fields = ('author', 'tags')
 
     def get_is_favorited(self, queryset, name, value):
-        """Добавление в избранное."""
+        """Получение избранных товаров."""
         if not value:
             return queryset
-        favorites = self.request.user.favorites.all()
-        return queryset.filter(
-            pk__in=(favorite.recipe.pk for favorite in favorites)
-        )
+        return queryset.filter(favorites__user=self.request.user)
 
     def get_is_in_shopping_cart(self, queryset, name, value):
         """Получение рецептов в списке покупок."""

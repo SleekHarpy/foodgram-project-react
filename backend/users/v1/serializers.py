@@ -1,11 +1,11 @@
 """Сериалайзеры приложения users."""
 
+from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from api.serializers.nested import RecipeShortReadSerializer
-
-from .models import User
+from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,6 +29,12 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True, 'required': True},
         }
         model = User
+
+    def validate_username(self, value):
+        """Валидация имени пользователя."""
+        if value == 'me':
+            raise ValidationError('Имя пользователя "me" запрещено.')
+        return value
 
     def is_subscribed_user(self, obj):
         """Проверка подписки пользователя."""

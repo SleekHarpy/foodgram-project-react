@@ -7,8 +7,7 @@ from rest_framework.serializers import (CharField, IntegerField, ListField,
                                         SlugRelatedField, ValidationError)
 
 from recipes.models import CountOfIngredient, Ingredient, Recipe, Tag
-from users.models import ShoppingCart
-from users.serializers import UserSerializer
+from users.v1.serializers import UserSerializer
 
 
 class TagSerializer(ModelSerializer):
@@ -18,7 +17,7 @@ class TagSerializer(ModelSerializer):
         """Мета класс тега."""
 
         model = Tag
-        fields = ('id', 'name', 'color', 'slug')
+        fields = '__all__'
 
 
 class IngredientSerializer(ModelSerializer):
@@ -28,7 +27,7 @@ class IngredientSerializer(ModelSerializer):
         """Мета класс ингредиентов."""
 
         model = Ingredient
-        fields = ('id', 'name', 'measurement_unit')
+        fields = '__all__'
 
 
 class RecipeIngredientWriteSerializer(ModelSerializer):
@@ -66,7 +65,7 @@ class RecipeIngredientReadSerializer(ModelSerializer):
         """Мета класс RecipeIngredientWriteSerializer."""
 
         model = CountOfIngredient
-        fields = ('id', 'name', 'measurement_unit', 'amount')
+        fields = '__all__'
 
 
 class RecipeReadSerializer(ModelSerializer):
@@ -82,17 +81,11 @@ class RecipeReadSerializer(ModelSerializer):
         """Мета класс RecipeReadSerializer."""
 
         model = Recipe
-        fields = ('id', 'name', 'tags', 'author', 'ingredients',
-                  'is_favorited', 'is_in_shopping_cart', 'image', 'text',
-                  'cooking_time')
-
-    def get_user(self):
-        """Получение пользователя."""
-        return self.context['request'].user
+        fields = '__all__'
 
     def get_is_favorited(self, obj):
         """Подписки."""
-        user = self.get_user()
+        user = self.context['request'].user
         return (
             user.is_authenticated
             and user.favorites.filter(recipe=obj).exists()
@@ -100,14 +93,11 @@ class RecipeReadSerializer(ModelSerializer):
 
     def get_is_in_shopping_cart(self, obj):
         """Список покупок."""
-        user = self.get_user()
-        try:
-            return (
-                user.is_authenticated and
-                user.shopping_cart.recipes.filter(pk__in=(obj.pk,)).exists()
-            )
-        except ShoppingCart.DoesNotExist:
-            return False
+        user = self.context['request'].user
+        return (
+            user.is_authenticated and
+            user.shopping_cart.recipes.filter(pk__in=(obj.pk,)).exists()
+        )
 
 
 class RecipeWriteSerializer(ModelSerializer):
@@ -126,8 +116,14 @@ class RecipeWriteSerializer(ModelSerializer):
         """Мета класс RecipeWriteSerializer."""
 
         model = Recipe
-        fields = ('ingredients', 'tags', 'image', 'name', 'text',
-                  'cooking_time')
+        fields = (
+            'ingredients',
+            'tags',
+            'image',
+            'name',
+            'text',
+            'cooking_time'
+        )
         extra_kwargs = {
             'cooking_time': {
                 'error_messages': {

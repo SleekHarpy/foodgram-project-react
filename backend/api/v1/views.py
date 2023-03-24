@@ -10,8 +10,8 @@ from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED,
                                    HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST)
 from rest_framework.viewsets import ModelViewSet
 
-from api.filters import IngredientSearchFilter, RecipeFilter
-from api.mixins import ListRetrieveViewSet
+from api.v1.filters import IngredientSearchFilter, RecipeFilter
+from api.v1.mixins import ListRetrieveViewSet
 from api.serializers.common import (IngredientSerializer, RecipeReadSerializer,
                                     RecipeWriteSerializer, TagSerializer)
 from api.serializers.nested import RecipeShortReadSerializer
