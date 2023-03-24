@@ -9,6 +9,13 @@ from .managers import UserManager
 class User(AbstractBaseUser, PermissionsMixin):
     """Модель пользователя."""
 
+    USER = 'user'
+    ADMIN = 'admin'
+    USER_ROLE = [
+        ('user', USER),
+        ('admin', ADMIN),
+    ]
+
     email = models.EmailField('Почта', max_length=254, unique=True)
     username = models.CharField('Никнейм', max_length=150)
     first_name = models.CharField('Имя', max_length=150,)
@@ -16,6 +23,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField('Пароль', max_length=150)
     is_superuser = models.BooleanField('Администратор', default=False)
     is_blocked = models.BooleanField('Заблокирован', default=False)
+    role = models.CharField(
+        'Роль', max_length=30, choices=USER_ROLE, default='user'
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

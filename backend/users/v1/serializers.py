@@ -16,15 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         """Мета класс пользователя."""
 
-        fields = (
-            'id',
-            'first_name',
-            'last_name',
-            'username',
-            'email',
-            'password',
-            'is_subscribed',
-        )
+        fields = '__all__'
         extra_kwargs = {
             'password': {'write_only': True, 'required': True},
         }
