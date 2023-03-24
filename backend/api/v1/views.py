@@ -16,7 +16,7 @@ from api.serializers.common import (IngredientSerializer, RecipeReadSerializer,
                                     RecipeWriteSerializer, TagSerializer)
 from api.serializers.nested import RecipeShortReadSerializer
 from foodgram.pagination import LimitPageNumberPagination
-from foodgram.permissions import IsAuthorOrAdminOrReadOnly
+from users.permissions import IsAuthorOrAdminOrReadOnly
 from recipes.models import Favorite, Ingredient, Recipe, Tag
 
 
