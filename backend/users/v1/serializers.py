@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from api.serializers.nested import RecipeShortReadSerializer
-from users.models import User
+from users.models import User, Subscribe
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -62,6 +62,22 @@ class SubscriptionSerializer(UserSerializer):
         """Мета класс сериализатора для подписок."""
 
         fields = UserSerializer.Meta.fields + ('recipes', 'recipes_count',)
+
+    def validate(self, data):
+        author = data['subscribing']
+        user = data['subscriber']
+        if user == author:
+            raise serializers.ValidationError(
+                'Нельзя подписаться на самого себя!'
+            )
+        if Subscribe.objects.filter(author=author, user=user).exists():
+            raise serializers.ValidationError('Нельзя подписаться дважды!')
+        return data
+
+    def create(self, validated_data):
+        subscribe = Subscribe.objects.create(**validated_data)
+        subscribe.save()
+        return subscribe
 
     def get_recipes_count(self, obj):
         """Получение количества рецептов."""

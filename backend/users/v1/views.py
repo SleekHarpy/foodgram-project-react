@@ -57,21 +57,10 @@ class UserSubscribeViewSet(UserViewSet):
 
     def create_subscribe(self, request, author):
         """Создание подписки."""
-        if request.user == author:
-            return Response(
-                {'errors': 'Нельзя подписаться на самого себя!'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        try:
-            subscribe = Subscribe.objects.create(
-                user=request.user,
-                author=author,
-            )
-        except IntegrityError:
-            return Response(
-                {'errors': 'Нельзя подписаться дважды!'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        subscribe = Subscribe.objects.create(
+            user=request.user,
+            author=author,
+        )
         serializer = self.get_subscription_serializer(subscribe.author)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -90,7 +79,7 @@ class UserSubscribeViewSet(UserViewSet):
         )
 
     @action(
-        methods=('get', 'delete'),
+        methods=('post', 'delete'),
         detail=True,
         permission_classes=(IsAuthenticated,)
     )
@@ -103,7 +92,7 @@ class UserSubscribeViewSet(UserViewSet):
                 {'detail': 'Пользователь не найден!'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        if request.method == 'GET':
+        if request.method == 'POST':
             return self.create_subscribe(request, author)
         return self.delete_subscribe(request, author)
 
