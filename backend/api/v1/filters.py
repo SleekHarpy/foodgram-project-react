@@ -62,12 +62,4 @@ class RecipeFilter(FilterSet):
         """Получение рецептов в списке покупок."""
         if not value:
             return queryset
-        try:
-            recipes = (
-                self.request.user.shopping_cart.recipes.all()
-            )
-        except ShoppingCart.DoesNotExist:
-            return queryset
-        return queryset.filter(
-            pk__in=(recipe.pk for recipe in recipes)
-        )
+        return queryset.filter(in_shopping_cart__user=self.request.user)
