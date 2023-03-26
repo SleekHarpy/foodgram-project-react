@@ -22,7 +22,7 @@ SECRET_KEY=любой_секретный_ключ_на_ваш_выбор
 ### Настройка проекта
 1. Запустите docker compose:
 ```bash
-docker-compose up -d
+docker-compose up -d 
 ```
 2. Примените миграции:
 ```bash
