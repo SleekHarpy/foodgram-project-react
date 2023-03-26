@@ -95,8 +95,8 @@ class RecipeReadSerializer(ModelSerializer):
         """Список покупок."""
         user = self.context['request'].user
         return (
-            user.is_authenticated and
-            user.shopping_cart.recipes.filter(pk__in=(obj.pk,)).exists()
+            user.is_authenticated
+            and user.shopping_cart.recipes.filter(pk__in=(obj.pk,)).exists()
         )
 
 

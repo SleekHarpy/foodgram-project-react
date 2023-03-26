@@ -12,4 +12,3 @@ class UsersConfig(AppConfig):
 
     def ready(self):
         """Чтение."""
-        import users.signals

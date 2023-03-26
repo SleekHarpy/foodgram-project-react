@@ -1,11 +1,11 @@
 """Сериалайзеры приложения users."""
 
-from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from api.serializers.nested import RecipeShortReadSerializer
-from users.models import User, Subscribe
+from users.models import Subscribe, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -56,6 +56,7 @@ class SubscriptionSerializer(UserSerializer):
         fields = UserSerializer.Meta.fields + ('recipes', 'recipes_count',)
 
     def validate(self, data):
+        """Валидация подписки."""
         author = data['subscribing']
         user = data['subscriber']
         if user == author:
@@ -67,6 +68,7 @@ class SubscriptionSerializer(UserSerializer):
         return data
 
     def create(self, validated_data):
+        """Валидация создания подписки."""
         subscribe = Subscribe.objects.create(**validated_data)
         subscribe.save()
         return subscribe

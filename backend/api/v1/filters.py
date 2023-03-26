@@ -6,7 +6,6 @@ from django_filters.rest_framework import (AllValuesMultipleFilter,
                                            FilterSet)
 
 from recipes.models import Ingredient, Recipe
-from users.models import ShoppingCart
 
 
 class IngredientSearchFilter(FilterSet):

@@ -1,6 +1,5 @@
 """Классы представления приложения users."""
 
-from django.db import IntegrityError
 from django.db.models import Sum
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
@@ -15,6 +14,7 @@ from api.serializers.nested import RecipeShortReadSerializer
 from foodgram.pagination import LimitPageNumberPagination
 from recipes.models import Recipe
 from users.models import ShoppingCart, Subscribe, User
+
 from .serializers import SubscriptionSerializer
 
 
