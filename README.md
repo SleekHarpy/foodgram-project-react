@@ -3,8 +3,7 @@ Cервис для публикаций и обмена рецептами.
 
 Авторизованные пользователи могут подписываться на понравившихся авторов, добавлять рецепты в избранное, в покупки, скачивать список покупок. Неавторизованным пользователям доступна регистрация, авторизация, просмотр рецептов других пользователей.
 
-![Foodgram Workflow](https://github.com/SleekHarpy/foodgram-project-react/actions/workflows/foodgram_workflow.yaml/badge.svg)
-
+![Foodgram Workflow](https://github.com/SleekHarpy/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?branch=master&event=push)
 Адрес проекта:
 http://foodgram.myvnc.com/
 
