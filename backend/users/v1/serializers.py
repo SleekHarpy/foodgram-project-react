@@ -53,7 +53,7 @@ class SubscriptionSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         """Мета класс сериализатора для подписок."""
 
-        fields = UserSerializer.Meta.fields + ('recipes', 'recipes_count',)
+        fields = UserSerializer.Meta.fields + 'recipes' + 'recipes_count'
 
     def validate(self, data):
         """Валидация подписки."""
