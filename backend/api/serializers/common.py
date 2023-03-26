@@ -8,6 +8,7 @@ from rest_framework.serializers import (CharField, IntegerField, ListField,
 
 from recipes.models import CountOfIngredient, Ingredient, Recipe, Tag
 from users.v1.serializers import UserSerializer
+from users.models import ShoppingCart
 
 
 class TagSerializer(ModelSerializer):
@@ -94,10 +95,13 @@ class RecipeReadSerializer(ModelSerializer):
     def get_is_in_shopping_cart(self, obj):
         """Список покупок."""
         user = self.context['request'].user
-        return (
-            user.is_authenticated
-            and user.shopping_cart.recipes.filter(pk__in=(obj.pk,)).exists()
-        )
+        try:
+            return (
+                user.is_authenticated and
+                user.shopping_cart.recipes.filter(pk__in=(obj.pk,)).exists()
+            )
+        except ShoppingCart.DoesNotExist:
+            return False
 
 
 class RecipeWriteSerializer(ModelSerializer):

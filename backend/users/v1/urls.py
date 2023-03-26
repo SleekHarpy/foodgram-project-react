@@ -15,11 +15,11 @@ app_name = 'users'
 
 authorization = [
     path(
-        'v1/token/login/',
+        'token/login/',
         TokenCreateWithCheckBlockStatusView.as_view(),
         name='login'
     ),
-    path('v1/token/logout/', TokenDestroyView.as_view(), name='logout')
+    path('token/logout/', TokenDestroyView.as_view(), name='logout')
 ]
 
 urlpatterns = [
