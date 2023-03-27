@@ -16,7 +16,15 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         """Мета класс пользователя."""
 
-        fields = '__all__'
+        fields = (
+            'id',
+            'email',
+            'username',
+            'first_name',
+            'last_name',
+            'password',
+            'is_subscribed'
+        )
         extra_kwargs = {
             'password': {'write_only': True, 'required': True},
         }
@@ -53,7 +61,7 @@ class SubscriptionSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         """Мета класс сериализатора для подписок."""
 
-        fields = UserSerializer.Meta.fields + 'recipes' + 'recipes_count'
+        fields = UserSerializer.Meta.fields + ('recipes', 'recipes_count',)
 
     def validate(self, data):
         """Валидация подписки."""
@@ -66,12 +74,6 @@ class SubscriptionSerializer(UserSerializer):
         if Subscribe.objects.filter(author=author, user=user).exists():
             raise serializers.ValidationError('Нельзя подписаться дважды!')
         return data
-
-    def create(self, validated_data):
-        """Валидация создания подписки."""
-        subscribe = Subscribe.objects.create(**validated_data)
-        subscribe.save()
-        return subscribe
 
     def get_recipes_count(self, obj):
         """Получение количества рецептов."""

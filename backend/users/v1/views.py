@@ -1,5 +1,6 @@
 """Классы представления приложения users."""
 
+from django.db import IntegrityError
 from django.db.models import Sum
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
@@ -56,10 +57,16 @@ class UserSubscribeViewSet(UserViewSet):
 
     def create_subscribe(self, request, author):
         """Создание подписки."""
-        subscribe = Subscribe.objects.create(
-            user=request.user,
-            author=author,
-        )
+        try:
+            subscribe = Subscribe.objects.create(
+                user=request.user,
+                author=author,
+            )
+        except IntegrityError:
+            return Response(
+                {'errors': 'Нельзя подписаться на данного пользователя!'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         serializer = self.get_subscription_serializer(subscribe.author)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -126,8 +133,8 @@ class ShoppingCartViewSet(GenericViewSet):
         for ingredient in ingredients:
             content += (
                 f'{ingredient[self.NAME]}'
-                f' - {ingredient["total"]}\r\n '
-                f'{ingredient[self.MEASUREMENT_UNIT]}'
+                f' - {ingredient["total"]} '
+                f'{ingredient[self.MEASUREMENT_UNIT]}\r\n'
             )
         return content
 
