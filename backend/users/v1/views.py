@@ -126,8 +126,8 @@ class ShoppingCartViewSet(GenericViewSet):
         for ingredient in ingredients:
             content += (
                 f'{ingredient[self.NAME]}'
+                f' - {ingredient["total"]}\r\n '
                 f'{ingredient[self.MEASUREMENT_UNIT]}'
-                f' - {ingredient["total"]}\r\n'
             )
         return content
 
